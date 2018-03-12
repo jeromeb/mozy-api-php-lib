@@ -14,5 +14,5 @@
             "src/Mozy.php"
         ]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
