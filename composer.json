@@ -1,0 +1,17 @@
+{
+    "name": "mozy/restlib-php",
+    "description": "A simple library leveraging the Mozy REST API.",
+    "authors": [{
+        "name": "Jerome Bachelet",
+        "email": "jerome@bachelet.me",
+        "role": "Developer"
+    }],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "files": ["src/Mozy.php"]
+    }
+},
+"minimum-stability": "dev"
+}
