@@ -10,8 +10,9 @@
         "php": ">=5.3.0"
     },
     "autoload": {
-        "files": ["src/Mozy.php"]
-    }
-},
-"minimum-stability": "dev"
+        "files": [
+            "src/Mozy.php"
+        ]
+    },
+    "minimum-stability": "dev"
 }
