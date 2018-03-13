@@ -387,7 +387,7 @@ class MozyREST {
 		$endTime = time();
 		$this->timeProcess = $endTime - $this->startTime;
 
-		return (object) array('status' => $this->status, 'message' => $this->message, 'code' => $this->code, 'details' => $this->details, 'time' => $this->timeProcess, 'ip' => trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com")));
+		return (object) array('status' => $this->status, 'message' => $this->message, 'code' => $this->code, 'details' => $this->details, 'extra' => array('time' => $this->timeProcess, 'ip' => trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com"))));
 	}
 
 	private function returnException($e) {
