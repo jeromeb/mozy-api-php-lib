@@ -36,6 +36,8 @@ class MozyREST {
 		$this->endpoint = $endpoint;
 		$this->apikey = $apiKey;
 		$this->logging = $logging;
+		$this->startTime = time();
+		//$this->ipAddress =
 
 	}
 
@@ -43,7 +45,6 @@ class MozyREST {
 
 	protected function request($method = 'GET') {
 
-		$startTime = time();
 		$curl = curl_init();
 		$logFile = dirname(__DIR__) . '/logs/' . $this->logging;
 
@@ -73,13 +74,14 @@ class MozyREST {
 			$data = null;
 			break;
 		}
+
 		if ($this->insecure) {
 
 			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 		}
 		curl_setopt($curl, CURLOPT_HEADER, 1);
-		if ($this->headers) {
+		if (isset($this->headers)) {
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $this->headers);
 		}
 
@@ -121,17 +123,19 @@ class MozyREST {
 		}
 
 		$httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		if ($this->isJson($html)) {
-			$data = (object) json_decode($html, true);
-		} else {
-			$data = $html;
+
+		if (isset($html)) {
+			if ($this->isJson($html)) {
+				$data = (object) json_decode($html, true);
+			} else {
+				$data = $html;
+			}
+
 		}
 
 		$x = 0;
 
 		$headers = $this->get_headers_from_curl_response($response, $headerSize);
-		$endTime = time();
-		$this->timeProcess = $endTime - $startTime;
 
 		if ($httpcode !== 200 && $httpcode !== 201 && $httpcode !== 204) {
 
@@ -380,7 +384,10 @@ class MozyREST {
 
 	protected function returnResult() {
 
-		return (object) array('status' => $this->status, 'message' => $this->message, 'code' => $this->code, 'details' => $this->details, 'time' => $this->timeProcess);
+		$endTime = time();
+		$this->timeProcess = $endTime - $this->startTime;
+
+		return (object) array('status' => $this->status, 'message' => $this->message, 'code' => $this->code, 'details' => $this->details, 'time' => $this->timeProcess, 'ip' => trim(shell_exec("dig +short myip.opendns.com @resolver1.opendns.com")));
 	}
 
 	private function returnException($e) {
